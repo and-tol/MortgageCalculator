@@ -14,8 +14,7 @@ const formatterCurrency = new Intl.NumberFormat('ru', {
 
 // focus->keydown->keypress->keyup->input
 
-function inputHandler(event) {
-
+creditText.addEventListener('focus', function (event) {
   let number = '';
 
   for (const letter of this.value) {
@@ -26,44 +25,35 @@ function inputHandler(event) {
 
   number = parseInt(number);
 
-  if (number < CREDIT_MIN) {
-    number = CREDIT_MIN;
-  }
+  this.value = formatterNumber.format(number);
 
-  if (number > CREDIT_MAX) {
-    number = CREDIT_MAX;
-  }
-
-  number = formatterNumber.format(number);
-
-  this.value = number;
-};
-
-creditText.addEventListener('input', function () {
-
-  let number = '';
-
-  for (const letter of this.value) {
-    if ('0123456789'.includes(letter)) {
-      number += letter;
-    }
-  }
-
-  number = parseInt(number);
-
-  if (number < CREDIT_MIN) {
-    number = CREDIT_MIN;
-  }
-
-  if (number > CREDIT_MAX) {
-    number = CREDIT_MAX;
-  }
-
-  number = formatterNumber.format(number);
-
-  this.value = number;
 });
 
+creditText.addEventListener('input', function () {
+  let number = '';
+
+  for (const letter of this.value) {
+    if ('0123456789'.includes(letter)) {
+      number += letter;
+    }
+  }
+
+  number = parseInt(number);
+
+  if (number < CREDIT_MIN) {
+    number = CREDIT_MIN;
+  }
+
+  if (number > CREDIT_MAX) {
+    number = CREDIT_MAX;
+  }
+
+  creditRange.value = number;
+
+  number = formatterNumber.format(number);
+  this.value = number;
+
+});
 
 creditText.addEventListener('blur', function (event) {
   let number = '';
@@ -79,7 +69,6 @@ creditText.addEventListener('blur', function (event) {
   this.value = formatterCurrency.format(number);
 
 });
-
 
 creditRange.addEventListener('input', function (event) {
   creditText.value = formatterCurrency.format(parseInt(this.value));
